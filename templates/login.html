@@ -1,14 +1,10 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="form-box">
-    <h2 style="text-align: center; margin-bottom: 25px; text-transform: uppercase;">{{ t.login_title }}</h2>
+<div style="max-width: 400px; margin: 50px auto; background: white; padding: 30px; border: 1px solid #ddd; text-align: center;">
+    <h2>Acceso Admin</h2>
     <form method="POST" action="/admin-login">
-        <div class="form-group">
-            <label for="password">{{ t.pass_label }}</label>
-            <input type="password" name="password" class="form-control" placeholder="..." required>
-        </div>
-        <button type="submit" class="btn">{{ t.enter_btn }}</button>
+        <input type="password" name="password" placeholder="Contraseña..." style="width:100%; padding:10px; margin: 20px 0; border:1px solid #ccc;" required>
+        <button type="submit" style="width:100%; padding:10px; background: #D32F2F; color: white; border: none; font-weight: bold;">ENTRAR</button>
     </form>
 </div>
 {% endblock %}

@@ -7,107 +7,88 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --brand-red: #D32F2F;
-            --brand-black: #0a0a0a;
-            --light-gray: #f4f4f4;
-            --white: #ffffff;
-        }
+        :root { --brand-red: #D32F2F; --brand-black: #0a0a0a; --white: #ffffff; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Roboto', sans-serif; background: var(--light-gray); color: var(--brand-black); display: flex; flex-direction: column; min-height: 100vh;}
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        
-        /* TOP BAR */
-        .top-bar { background: var(--brand-black); color: white; padding: 8px 0; font-size: 0.8rem; border-bottom: 1px solid #333; }
-        .top-bar-flex { max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 20px; padding: 0 15px;}
-        .lang-flags a { font-size: 1.2rem; margin-left: 10px; text-decoration: none; filter: grayscale(50%); transition: 0.3s; }
-        .lang-flags a:hover { filter: grayscale(0%); transform: scale(1.2); }
+        body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
 
         /* HEADER */
-        .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #ddd; }
-        .header-flex { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .logo-img { height: 70px; }
-
-        /* NAV (Estilo TAB solicitado) */
-        .main-nav { background: var(--brand-black); position: sticky; top: 0; z-index: 1000; }
-        .nav-list { display: flex; justify-content: center; list-style: none; padding: 0; margin: 0; }
+        .top-bar { background: var(--brand-black); color: white; padding: 10px 0; font-size: 0.8rem; }
+        .top-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px; padding: 0 20px; }
+        .flags a { font-size: 1.2rem; text-decoration: none; margin-left: 8px; }
+        
+        .main-header { background: white; padding: 20px 0; border-bottom: 1px solid #ddd; }
+        .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        
+        /* NAV TABS (Estilo Específico) */
+        .main-nav { background: var(--brand-black); position: sticky; top: 0; z-index: 100; }
+        .nav-list { display: flex; justify-content: center; list-style: none; flex-wrap: wrap; }
         .nav-link { 
-            display: block; 
-            padding: 15px 30px; 
+            padding: 15px 25px; 
             color: white; 
             font-weight: 700; 
             text-transform: uppercase; 
-            cursor: pointer;
+            cursor: pointer; 
             border-bottom: 4px solid transparent; 
+            font-size: 0.95rem;
         }
         .nav-link:hover, .nav-link.active { background: #222; color: var(--brand-red); border-bottom-color: var(--brand-red); }
 
-        /* CONTAINER */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 15px; flex: 1; }
+        /* CONTENIDO */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; flex: 1; }
 
-        /* FOOTER (Estilo Image 2) */
-        footer { background: var(--brand-black); color: #888; padding: 60px 0 20px; margin-top: auto; font-size: 0.9rem; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .footer-col h4 { color: white; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
-        .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a:hover { color: var(--brand-red); }
-        .admin-link-footer { color: #333; font-size: 0.8rem; margin-top: 10px; display: inline-block;}
-        .admin-link-footer:hover { color: #555; }
-        
-        /* FORMULARIOS */
-        .form-box { background: white; padding: 40px; max-width: 600px; margin: 0 auto; border-top: 5px solid var(--brand-red); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-control { width: 100%; padding: 12px; border: 2px solid #ddd; font-family: inherit; }
-        .btn { background: var(--brand-black); color: white; padding: 15px; border: none; cursor: pointer; text-transform: uppercase; font-weight: 900; width: 100%; letter-spacing: 1px; }
-        .btn:hover { background: var(--brand-red); }
-        
-        .alert { padding: 15px; margin-bottom: 20px; color: white; text-align: center; }
-        .alert.error { background: #D32F2F; }
-        .alert.success { background: #2E7D32; }
+        /* FOOTER */
+        footer { background: var(--brand-black); color: #aaa; padding: 50px 0 20px; margin-top: auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .footer-col h4 { color: white; margin-bottom: 15px; font-weight: bold; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col a:hover { color: var(--brand-red); }
+
+        /* ALERTAS */
+        .alert { padding: 10px; margin-bottom: 20px; text-align: center; color: white; font-weight: bold; }
+        .alert.error { background: red; }
+        .alert.success { background: green; }
     </style>
-    {% block head %}{% endblock %}
 </head>
 <body>
+
     <div class="top-bar">
-        <div class="top-bar-flex">
-            <span>{{ t.shippy }} | ALPHA Training</span>
-            <div class="lang-flags">
-                <a href="{{ url_for('set_language', lang='es') }}" title="Español">🇪🇸</a>
-                <a href="{{ url_for('set_language', lang='en') }}" title="English">🇺🇸</a>
-                <a href="{{ url_for('set_language', lang='pt') }}" title="Português">🇵🇹</a>
+        <div class="top-container">
+            <span>{{ t.ship }} | ALPHA</span>
+            <div class="flags">
+                <a href="/set_language/es">🇪🇸</a>
+                <a href="/set_language/en">🇺🇸</a>
+                <a href="/set_language/pt">🇵🇹</a>
             </div>
         </div>
     </div>
-    
+
     <header class="main-header">
-        <div class="header-flex">
-            <a href="/"><img src="https://i.ibb.co/j9Pp0YLz/Logo-2.png" alt="ALPHA" class="logo-img"></a>
-            <div style="font-weight: 700; font-size: 1.1rem;">
-                <i class="fas fa-shopping-cart" style="color: var(--brand-red);"></i> {{ t.cart }}
-            </div>
+        <div class="header-inner">
+            <a href="/"><img src="https://i.ibb.co/j9Pp0YLz/Logo-2.png" style="height: 60px;"></a>
+            <div><i class="fas fa-shopping-cart"></i> {{ t.cart }}</div>
         </div>
     </header>
 
     <nav class="main-nav">
         <ul class="nav-list">
-            <li><a href="/?cat=ofertas" class="nav-link" onclick="filterProducts('ofertas'); return false;">{{ t.offers }}</a></li>
-            <li><a href="/?cat=escenarios" class="nav-link" onclick="filterProducts('escenarios'); return false;">{{ t.scenarios }}</a></li>
-            <li><a href="/?cat=armas" class="nav-link" onclick="filterProducts('armas'); return false;">{{ t.weapons }}</a></li>
-            <li><a href="/?cat=kits" class="nav-link" onclick="filterProducts('kits'); return false;">{{ t.kits }}</a></li>
-            <li><a href="/?cat=simuladores" class="nav-link" onclick="filterProducts('simuladores'); return false;">{{ t.sims }}</a></li>
+            <li><a href="/?cat=ofertas" class="nav-link" onclick="filterGrid('ofertas'); return false;">{{ t.offers }}</a></li>
+            <li><a href="/?cat=escenarios" class="nav-link" onclick="filterGrid('escenarios'); return false;">{{ t.scenarios }}</a></li>
+            <li><a href="/?cat=armas" class="nav-link" onclick="filterGrid('armas'); return false;">{{ t.weapons }}</a></li>
+            <li><a href="/?cat=kits" class="nav-link" onclick="filterGrid('kits'); return false;">{{ t.kits }}</a></li>
+            <li><a href="/?cat=simuladores" class="nav-link" onclick="filterGrid('simuladores'); return false;">{{ t.sims }}</a></li>
         </ul>
     </nav>
 
     <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% with messages = get_flashed_messages() %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert {{ category }}">{{ message }}</div>
+                {% for message in messages %}
+                    <div class="alert success">{{ message }}</div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
+        
         {% block content %}{% endblock %}
     </div>
 
@@ -116,47 +97,37 @@
             <div class="footer-col">
                 <h4>ALPHA SUPPORT</h4>
                 <ul>
-                    <li><a href="#">{{ t.tech_support }}</a></li>
-                    <li><a href="#">{{ t.warranty }}</a></li>
-                    <li><a href="#">{{ t.shipping_info }}</a></li>
-                    <li><a href="#">{{ t.contact }}</a></li>
-                    <li><a href="{{ url_for('admin_login') }}" style="color: #444; font-size: 0.8rem; margin-top:10px;">{{ t.admin }}</a></li>
+                    <li>Servicio Técnico</li>
+                    <li>Garantía</li>
+                    <li>{{ t.contact }}</li>
+                    <li><a href="/admin-login" style="color: #555; font-size: 0.8rem;">{{ t.admin }}</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>{{ t.catalog }}</h4>
-                <ul>
-                    <li><a href="#">{{ t.sims }}</a></li>
-                    <li><a href="#">{{ t.weapons }}</a></li>
-                    <li><a href="#">{{ t.kits }}</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>ALPHA | TRAINING SIMULATORS</h4>
-                <p>{{ t.footer_slogan }}</p>
-                <div style="margin-top: 15px; font-size: 1.5rem; color: white;">
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-facebook-f" style="margin-left: 15px;"></i>
-                    <i class="fab fa-youtube" style="margin-left: 15px;"></i>
+                <h4>ALPHA | TRAINING</h4>
+                <p>Líderes en simulación táctica.</p>
+                <div style="margin-top: 10px; font-size: 1.5rem; color: white;">
+                    <i class="fab fa-instagram"></i> <i class="fab fa-facebook"></i>
                 </div>
             </div>
         </div>
-        <div style="text-align: center; border-top: 1px solid #333; padding-top: 20px; margin-top: 40px;">
-            <p>&copy; 2026 ALPHA Training Simulators. {{ t.rights }}</p>
+        <div style="text-align: center; margin-top: 30px; padding-top: 10px; border-top: 1px solid #333;">
+            &copy; 2026 ALPHA.
         </div>
     </footer>
-    
+
     <script>
-        // Script simple para resaltar la pestaña activa si es necesario
-        function filterProducts(category) {
-            // Lógica de UI para cambiar clase active
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        function filterGrid(cat) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Lógica de filtrado en Home
-            if(typeof window.filterGrid === 'function') {
-                window.filterGrid(category);
-            }
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const cCat = card.getAttribute('data-cat');
+                if (cat === 'ofertas') card.style.display = 'flex';
+                else if (cCat && cCat.toLowerCase().includes(cat)) card.style.display = 'flex';
+                else card.style.display = 'none';
+            });
         }
     </script>
 </body>
