@@ -2,9 +2,9 @@
 
 {% block head %}
 <style>
-    /* Estilos adicionales para el Home */
+    /* GRID PRODUCTOS */
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-    .product-card { background: white; border: 1px solid #eee; transition: 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+    .product-card { background: white; border: 1px solid #eee; transition: 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; cursor: pointer; }
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: #ddd; }
     
     .p-img-container { height: 250px; background: #fff; display: flex; align-items: center; justify-content: center; padding: 20px; border-bottom: 1px solid #f9f9f9; }
@@ -13,18 +13,44 @@
     .p-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
     .p-cat { color: #999; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; font-weight: 700; letter-spacing: 1px;}
     .p-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--brand-black); line-height: 1.2; }
-    .p-specs { font-size: 0.9rem; color: #666; margin-bottom: 20px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .p-specs { font-size: 0.9rem; color: #666; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     
-    .p-price-block { margin-top: auto; }
     .p-price-usd { font-size: 1.5rem; font-weight: 900; color: var(--brand-red); }
     .p-price-cop { font-size: 0.85rem; color: #444; margin-top: 2px; }
     
-    .btn-card { display: block; background: var(--brand-black); color: white; text-align: center; padding: 12px; margin-top: 15px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+    .btn-card { display: block; background: var(--brand-black); color: white; text-align: center; padding: 12px; margin-top: auto; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
     .btn-card:hover { background: var(--brand-red); }
 
-    .tag { position: absolute; top: 15px; left: 15px; padding: 5px 10px; font-size: 0.7rem; font-weight: 900; color: white; text-transform: uppercase; }
-    .tag.oferta { background: black; }
-    .tag.nuevo { background: var(--brand-red); }
+    /* ESTILOS DEL MODAL (VENTANA EMERGENTE) */
+    .modal-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
+        padding: 20px;
+    }
+    .modal-content {
+        background: white; width: 100%; max-width: 900px; height: 80vh; 
+        display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+        border-radius: 5px; overflow: hidden; position: relative;
+        animation: fadeIn 0.3s ease;
+    }
+    .modal-gallery { background: #f4f4f4; padding: 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+    .main-image { width: 100%; height: 350px; object-fit: contain; margin-bottom: 15px; border: 1px solid #ddd; background: white; }
+    .thumbnails { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .thumb { width: 60px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.7; }
+    .thumb:hover, .thumb.selected { border-color: var(--brand-red); opacity: 1; }
+    
+    .modal-details { padding: 40px; overflow-y: auto; position: relative; }
+    .close-modal { position: absolute; top: 20px; right: 20px; font-size: 2rem; cursor: pointer; color: #333; }
+    .modal-title { font-size: 2rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; }
+    .modal-cat { color: var(--brand-red); font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 20px; display: block; }
+    .modal-specs { font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 30px; white-space: pre-wrap; }
+    
+    @media (max-width: 768px) {
+        .modal-content { grid-template-columns: 1fr; height: auto; max-height: 90vh; overflow-y: auto; }
+        .modal-gallery { height: auto; }
+        .main-image { height: 250px; }
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 </style>
 {% endblock %}
 
@@ -32,32 +58,26 @@
 
     <div class="product-grid" id="productGrid">
         {% for product in products %}
-        <article class="product-card" data-category="{{ product.category|lower }}">
-            {% if product.category == 'Ofertas' %}
-                <span class="tag oferta">OFERTA</span>
-            {% else %}
-                <span class="tag nuevo">NUEVO</span>
-            {% endif %}
-
+        <article class="product-card" 
+                 data-category="{{ product.category|lower }}"
+                 onclick="openModal({{ product | tojson }})">
+            
             <div class="p-img-container">
                 {% if product.images and product.images|length > 0 %}
                     <img src="{{ product.images[0] }}" alt="{{ product.name }}">
                 {% else %}
-                    <img src="https://via.placeholder.com/300?text=ALPHA" alt="No Image">
+                    <img src="https://i.ibb.co/j9Pp0YLz/Logo-2.png" alt="No Image">
                 {% endif %}
             </div>
 
             <div class="p-info">
                 <span class="p-cat">{{ product.category }}</span>
                 <h3 class="p-title">{{ product.name }}</h3>
-                <p class="p-specs">{{ product.specs }}</p>
-                
                 <div class="p-price-block">
                     <div class="p-price-usd">${{ "{:,.2f}".format(product.price_usd) }}</div>
                     <div class="p-price-cop">COP ${{ "{:,.0f}".format(product.price_cop) }}</div>
                 </div>
-
-                <a href="#" class="btn-card">{{ t.add_cart }}</a>
+                <button class="btn-card">{{ t.view_details }}</button>
             </div>
         </article>
         {% else %}
@@ -67,21 +87,100 @@
         {% endfor %}
     </div>
 
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            
+            <div class="modal-gallery">
+                <img src="" id="modalMainImg" class="main-image">
+                <div class="thumbnails" id="modalThumbs"></div>
+            </div>
+            
+            <div class="modal-details">
+                <span id="modalCat" class="modal-cat"></span>
+                <h2 id="modalTitle" class="modal-title"></h2>
+                
+                <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <div id="modalPriceUSD" class="p-price-usd"></div>
+                    <div id="modalPriceCOP" class="p-price-cop"></div>
+                </div>
+
+                <h4 style="font-weight:bold; margin-bottom:10px;">{{ t.description }}:</h4>
+                <p id="modalSpecs" class="modal-specs"></p>
+                
+                <button class="btn" style="background: var(--brand-red);">{{ t.add_cart }}</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Función global llamada desde el Nav
+        // Función Filtrado
         window.filterGrid = function(category) {
             const items = document.querySelectorAll('.product-card');
             items.forEach(item => {
                 const itemCat = item.getAttribute('data-category');
-                // Lógica simple: 'ofertas' muestra todo o filtro específico
                 if (category === 'ofertas') {
-                     item.style.display = 'flex'; // En este ejemplo, ofertas muestra todo o su propia categoría
+                     item.style.display = 'flex'; 
                 } else if (itemCat.includes(category)) {
                     item.style.display = 'flex';
                 } else {
                     item.style.display = 'none';
                 }
             });
+        }
+
+        // --- LÓGICA DEL MODAL ---
+        const modal = document.getElementById('productModal');
+        const mainImg = document.getElementById('modalMainImg');
+        const thumbsContainer = document.getElementById('modalThumbs');
+
+        function openModal(product) {
+            // 1. Llenar Textos
+            document.getElementById('modalTitle').innerText = product.name;
+            document.getElementById('modalCat').innerText = product.category;
+            document.getElementById('modalSpecs').innerText = product.specs;
+            
+            // 2. Formatear Precios
+            const cop = new Intl.NumberFormat('es-CO').format(product.price_cop);
+            document.getElementById('modalPriceUSD').innerText = `USD $${product.price_usd}`;
+            document.getElementById('modalPriceCOP').innerText = `COP $${cop}`;
+
+            // 3. Manejo de Imágenes
+            thumbsContainer.innerHTML = ''; // Limpiar anteriores
+            
+            if (product.images && product.images.length > 0) {
+                // Poner la primera como principal
+                mainImg.src = product.images[0];
+                
+                // Crear miniaturas
+                product.images.forEach(imgUrl => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgUrl;
+                    thumb.className = 'thumb';
+                    thumb.onclick = function() {
+                        mainImg.src = imgUrl; // Cambiar principal al clic
+                        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('selected'));
+                        this.classList.add('selected');
+                    };
+                    thumbsContainer.appendChild(thumb);
+                });
+            } else {
+                mainImg.src = 'https://via.placeholder.com/300?text=ALPHA';
+            }
+
+            // 4. Mostrar
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Cerrar al dar clic fuera del contenido
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
         }
     </script>
 {% endblock %}
